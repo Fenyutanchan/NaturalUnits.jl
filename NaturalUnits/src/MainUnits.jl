@@ -50,6 +50,7 @@ zero(::T) where T<:EnergyUnit = T(0)
 zero(::Type{T}) where T<:EnergyUnit = T(0) 
 
 convert(::Type{T}, u::T) where T<:EnergyUnit = identity(u)
+convert(::Type{<:EnergyUnit}, num::Number) = identity(num)
 convert(T::Type{<:EnergyUnit}, u::EnergyUnit) = convert(T, convert(eV, u))
 
 promote_rule(::Type{<:EnergyUnit}, ::Type{<:EnergyUnit}) = eV

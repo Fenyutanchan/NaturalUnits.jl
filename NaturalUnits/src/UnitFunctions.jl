@@ -1,6 +1,6 @@
 function __Joule(u::NaturalUnit) # 1 J = ... ()eV
     J = eV(1) / SIConstants.e
-    return convert(u.main_unit, J)
+    return convert(u.unit, J)
 end
 
 function __meter(u::NaturalUnit) # 1 m = ... ()eV^{-1}

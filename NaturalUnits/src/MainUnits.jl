@@ -43,10 +43,10 @@ for head ∈ keys(__head_num_dict)
     (eval ∘ generation_template_eV)(head)
 end
 
-one(::T) where T<:EnergyUnit = T()
+one(u::T) where T<:EnergyUnit = T(1, dim(u))
 one(::Type{T}) where T<:EnergyUnit = T()
 
-zero(::T) where T<:EnergyUnit = T(0)
+zero(u::T) where T<:EnergyUnit = T(0, dim(u))
 zero(::Type{T}) where T<:EnergyUnit = T(0) 
 
 convert(::Type{T}, u::T) where T<:EnergyUnit = identity(u)

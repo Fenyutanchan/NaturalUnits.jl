@@ -1,0 +1,8 @@
+name = "MyParameters"
+uuid = "47764770-4032-46dd-81ee-2c490d6395a6"
+authors = ["Quan-feng WU <32387646+Fenyutanchan@users.noreply.github.com>"]
+version = "0.1.0"
+
+[deps]
+NaturalUnits = "61adfb09-12d1-4e3c-91b1-54bf68ca093d"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"

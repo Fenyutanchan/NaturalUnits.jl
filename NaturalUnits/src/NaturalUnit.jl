@@ -16,7 +16,7 @@ function __G_Newton end
 function __Planck_MASS end
 function __Planck_mass end
 
-const property_function_dict = Dict{Symbol, Function}(
+__property_function_dict = Dict{Symbol, Function}(
     :J => __Joule,
     :m => __meter,
     :cm => __centimeter,
@@ -29,6 +29,10 @@ const property_function_dict = Dict{Symbol, Function}(
     :M_P => __Planck_MASS,
     :m_P => __Planck_mass
 )
+function add_property_function(name::Symbol, func::Function)
+    __property_function_dict[name] = func
+    return nothing
+end
 
 function getproperty(u::NaturalUnit, name::Symbol)
     if haskey(property_function_dict, name)

@@ -8,6 +8,7 @@ import Base: getproperty
 export EnergyUnit, eV, generation_template_eV
 export NaturalUnit
 export dim, val
+export add_property_function
 
 include("NUConstants.jl")
 include("SIConstants.jl")

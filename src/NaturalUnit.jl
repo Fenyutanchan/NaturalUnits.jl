@@ -1,5 +1,5 @@
-struct NaturalUnit
-    main_unit::Type{<:EnergyUnit}
+struct NaturalUnit{T<:EnergyUnit}
+    unit::Type{T}
 end
 
 # in NaturalUnits.jl/src/UnitFunctions.jl 
@@ -35,11 +35,11 @@ function add_property_function(name::Symbol, func::Function)
 end
 
 function getproperty(u::NaturalUnit, name::Symbol)
-    if haskey(property_function_dict, name)
-        return property_function_dict[name](u)
+    if haskey(__property_function_dict, name)
+        return __property_function_dict[name](u)
     else
         return getfield(u, name)
     end
 end
 
-val(nu::NaturalUnit, x) = val(nu.main_unit, x)
+val(nu::NaturalUnit, x) = val(nu.unit, x)

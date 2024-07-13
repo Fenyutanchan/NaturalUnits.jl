@@ -70,6 +70,7 @@ else
 end
 +(u1::EnergyUnit, u2::EnergyUnit) = +(promote(u1, u2)...)
 -(u1::EnergyUnit, u2::EnergyUnit) = -(promote(u1, u2)...)
+-(u::T) where T<:EnergyUnit = T(-val(u), dim(u))
 
 *(u1::T, u2::T) where T<:EnergyUnit = T(val(u1) * val(u2), dim(u1) + dim(u2))
 /(u1::T, u2::T) where T<:EnergyUnit = T(val(u1) / val(u2), dim(u1) - dim(u2))
@@ -96,10 +97,11 @@ else
 end
 isless(u1::EnergyUnit, u2::EnergyUnit) = isless(promote(u1, u2)...)
 
-sqrt(u::T) where T<:EnergyUnit = T(sqrt(val(u)), dim(u) // 2)
-cbrt(u::T) where T<:EnergyUnit = T(cbrt(val(u)), dim(u) // 3)
+sqrt(u::T) where T<:EnergyUnit = T((sqrt ∘ val)(u), dim(u) // 2)
+cbrt(u::T) where T<:EnergyUnit = T((cbrt ∘ val)(u), dim(u) // 3)
 
 dim(u::EnergyUnit) = u.dimension
+dim(num::Number) = 0
 val(u::EnergyUnit) = u.value
 val(::Type{T}, u::EnergyUnit) where T<:EnergyUnit = convert(T, u).value
 val(num::Number) = identity(num)

@@ -100,6 +100,10 @@ isless(u1::EnergyUnit, u2::EnergyUnit) = isless(promote(u1, u2)...)
 sqrt(u::T) where T<:EnergyUnit = T((sqrt ∘ val)(u), dim(u) // 2)
 cbrt(u::T) where T<:EnergyUnit = T((cbrt ∘ val)(u), dim(u) // 3)
 
+iterate(u::EnergyUnit) = (u, nothing)
+iterate(::EnergyUnit, ::Nothing) = nothing
+length(u::EnergyUnit) = 1
+
 dim(u::EnergyUnit) = u.dimension
 dim(num::Number) = 0
 val(u::EnergyUnit) = u.value

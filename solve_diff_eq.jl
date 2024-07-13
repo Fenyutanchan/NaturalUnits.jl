@@ -5,7 +5,6 @@ using JLD2
 using NaturalUnits
 using Plots
 using ProgressMeter
-using SpecialFunctions
 
 function main()
     unit = NaturalUnit(MeV)
@@ -59,24 +58,34 @@ function main()
     a_list = solution.t
     na³_list = [param.unit.unit(na³, 3) for na³ in solution.u]
 
-
-    jld2_file_name = get_jld2_file_name(param)
+    current_jld2_file_name = joinpath(
+        @__DIR__,
+        "data",
+        "current.jld2"
+    )
+    jld2_file_name = joinpath(
+        @__DIR__,
+        "data",
+        get_jld2_file_name(param)
+    )
     jldopen(jld2_file_name, "w") do file
         file["a"] = a_list
         file["na³"] = na³_list
         file["param"] = param.content
     end
+    rm(current_jld2_file_name; force=true, recursive=true)
+    symlink(jld2_file_name, current_jld2_file_name)
 
     return jld2_file_name
 end
 
 function get_jld2_file_name(param)
-    M₀_BH = param.M₀_BH
+    M₀_BH = param.M₀_BH / param.unit.g
     β_BH = param.β_BH
     m_X = param.m_X
     α_X = param.α_X
 
-    return "M₀_BH_$(M₀_BH)_β_BH_$(β_BH)_m_X_$(m_X)_α_X_$(α_X).jld2"
+    return "M₀_BH_gram($(M₀_BH), 1)_β_BH_$(β_BH)_m_X_$(m_X)_α_X_$(α_X).jld2"
 end
 
 function particle_production_rate_per_time_and_energy(energy, T_BH, param) # mass dimension: 0
@@ -230,5 +239,4 @@ function inv_γ_quick(a, param)
     return inv_γ
 end
 
-solution = main()
-
+main()

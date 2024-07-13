@@ -13,6 +13,7 @@ function main()
     a_list = load(jld2_file_name, "a")
     na³_list = load(jld2_file_name, "na³")
     param_dict = load(jld2_file_name, "param")
+    mode = param_dict[:mode]
 
     ζ₃ = zeta(3)
     T_list = param_dict[:C_aT] ./ a_list
@@ -27,11 +28,12 @@ function main()
         linewith=3,
         label=L"$n_X / n_γ$", legend=:topleft,
         xscale=:log10, yscale=:log10,
+        title=L"$(n_X / n_γ)$ - $(m_X / T)$ in mode of " * mode,
         minorgrid=true
     )
     plot!(
         m_over_T_list, plateau_list;
-        linewith=3, label="Plateau",
+        linewith=3, label=L"$1.9 \times 10^{-13}$",
         color=:red, linestyle=:dash
     )
     xlabel!(L"$m_X / T$")

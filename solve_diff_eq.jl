@@ -181,8 +181,16 @@ end
 function collision_term_production(a, param)
     m_BH = mass_BH_evolution(a, param)
     T_BH = temperature_BH(m_BH, param.unit)
-    Γ = particle_production_rate_from_BH(T_BH, param)
+
+    # temp
+    # n_BH = number_density_BH(a, param)
+
+    # param.m_X / T_BH > 3.6 && return zero(T_BH * n_BH)
+    # return .012 * T_BH * n_BH
+    # end temp
+
     n_BH = number_density_BH(a, param)
+    Γ = particle_production_rate_from_BH(T_BH, param)
 
     return Γ * n_BH
 end

@@ -26,6 +26,8 @@ function main()
     param.na³_init = 0
     param.a_finl = 1.5e6
 
+    param.mode = "quick-quick"
+
     param.T₀ = (1 / 2) * (
         5 / (param.g_star * π^3)
     )^(1/4) * sqrt(3 * param.α_BH * unit.m_P^3 / param.M₀_BH)
@@ -84,8 +86,9 @@ function get_jld2_file_name(param)
     β_BH = param.β_BH
     m_X = param.m_X
     α_X = param.α_X
+    mode = param.mode
 
-    return "M₀_BH_gram($(M₀_BH), 1)_β_BH_$(β_BH)_m_X_$(m_X)_α_X_$(α_X).jld2"
+    return "M₀_BH_gram($(M₀_BH), 1)_β_BH_$(β_BH)_m_X_$(m_X)_α_X_$(α_X)_mode_$(mode).jld2"
 end
 
 function particle_production_rate_per_time_and_energy(energy, T_BH, param) # mass dimension: 0
@@ -184,13 +187,14 @@ function collision_term_production(a, param)
     return Γ * n_BH
 end
 
-function collision_term_depletion(na³, a, param; mode="quick")
+function collision_term_depletion(na³, a, param)
+    mode = param.mode
     inv_γ = if mode == "slow"
         error("Not implemented.")
     elseif mode == "quick"
         inv_γ_quick(a, param)
-    elseif mode == "quick quick"
-        error("Not implemented.")
+    elseif mode == "quick-quick"
+        inv_γ_quick_quick(a, param)
     else
         error("Invalid mode: $mode.")
     end
@@ -234,6 +238,22 @@ function inv_γ_quick(a, param)
     @assert den_integral.retcode == ReturnCode.Success "Integral calculation failed."
 
     inv_γ = num_integral.u / den_integral.u
+    isinf(inv_γ) && return inv_γ_cache
+    isnan(inv_γ) && return inv_γ_cache
+    inv_γ_cache = inv_γ
+    return inv_γ
+end
+
+function inv_γ_quick_quick(a, param)
+    global inv_γ_cache
+    
+    m_X = param.m_X
+    m_BH = mass_BH_evolution(a, param)
+    T_BH = temperature_BH(m_BH, param.unit)
+    
+    inv_γ = .32 * m_X / T_BH
+    
+    isinf(inv_γ) && return inv_γ_cache
     isnan(inv_γ) && return inv_γ_cache
     inv_γ_cache = inv_γ
     return inv_γ

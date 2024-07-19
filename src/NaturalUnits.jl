@@ -9,7 +9,7 @@ import Base: iterate, length # for broadcast
 
 export EnergyUnit, eV, generation_template_eV
 export NaturalUnit
-export dim, val
+export EUdim, EUval
 export add_property_function
 
 include("NUConstants.jl")

@@ -30,7 +30,7 @@ function main()
 
     param.T₀ = (1 / 2) * (
         5 / (param.g_star * π^3)
-    )^(1/4) * sqrt(3 * param.α_BH * unit.m_P^3 / param.M₀_BH)
+    )^(1/4) * sqrt(3 * param.α_BH * unit.m_Pl^3 / param.M₀_BH)
     param.C_aT = param.T₀ * param.a₀
     param.g_BH = 7e-5 * param.g_star
     param.ρ₀ = (π^2 / 30) * param.g_star * param.T₀^4
@@ -41,17 +41,17 @@ function main()
     function Boltzmann_function(na³, p, a)
         na³_times_eV = param.unit.unit(na³, 3)
         T = param.C_aT / a
-        M_P = param.unit.M_P
+        M_Pl = param.unit.M_Pl
         g_star = param.g_star
         inv_LHS_factor = a^2 * sqrt(
-            90 * M_P^2 / (π^2 * g_star * T^4)
+            90 * M_Pl^2 / (π^2 * g_star * T^4)
         )
 
         ps = (a - param.a_init) / (param.a_finl - param.a_init) * 10000
         update!(progress, ceil(Int, ps))
 
         RHS = collision_term_production(a, param) - collision_term_depletion(na³_times_eV, a, param)
-        return val(param.unit.unit, inv_LHS_factor * RHS)
+        return EUval(param.unit.unit, inv_LHS_factor * RHS)
     end
     problem = ODEProblem(Boltzmann_function, param.na³_init, (param.a_init, param.a_finl))
 
@@ -120,7 +120,7 @@ temperature_BH(M_BH, unit) = M_BH ≤ zero(M_BH) ? zero(M_BH) :
     1 / (8 * π * unit.G_N * M_BH)
 
 function particle_full_number_energy_profile(energy, param) # mass dimension: -1
-    τ_BH = val(param.unit.unit, life_BH(param))
+    τ_BH = EUval(param.unit.unit, life_BH(param))
 
     function integrand(t, p)
         t_over_eV = param.unit.unit(t, -1)
@@ -129,7 +129,7 @@ function particle_full_number_energy_profile(energy, param) # mass dimension: -1
         result = particle_production_rate_per_time_and_energy(energy, T_BH, param)
         # @assert (iszero ∘ dim)(result) "The result must have mass dimension 0."
 
-        return val(param.unit.unit, result)
+        return EUval(param.unit.unit, result)
     end
 
     problem = IntegralProblem(integrand, (zero(τ_BH), τ_BH))
@@ -143,8 +143,8 @@ end
 function life_BH(param) # mass dimension: -1
     M₀_BH = param.M₀_BH
     g_BH = param.g_BH
-    m_P = param.unit.m_P
-    return M₀_BH^3 / (3 * g_BH * m_P^4)
+    m_Pl = param.unit.m_Pl
+    return M₀_BH^3 / (3 * g_BH * m_Pl^4)
 end
 
 function mass_BH_evolution_time(t, param)
@@ -157,12 +157,12 @@ function mass_BH_evolution_time(t, param)
 end
 
 function mass_BH_evolution(a, param)
-    M_P = param.unit.M_P
+    M_Pl = param.unit.M_Pl
     g_star = param.g_star
     C_aT = param.C_aT
     a₀ = param.a₀
 
-    prefactor = sqrt(10 / g_star) * 3 * M_P / (π * C_aT^2)
+    prefactor = sqrt(10 / g_star) * 3 * M_Pl / (π * C_aT^2)
     t = prefactor * (a^2 - a₀^2) / 2
 
     return mass_BH_evolution_time(t, param)
@@ -224,16 +224,16 @@ function inv_γ_quick(a, param)
         E_times_eV = param.unit.unit(E, 1)
         den = particle_production_rate_per_time_and_energy(E_times_eV, T_BH, param)
         num = den * param.m_X / E_times_eV
-        return val(param.unit.unit, num)
+        return EUval(param.unit.unit, num)
     end
     function den_integrand(E, p)
         E_times_eV = param.unit.unit(E, 1)
         den = particle_production_rate_per_time_and_energy(E_times_eV, T_BH, param)
-        return val(param.unit.unit, den)
+        return EUval(param.unit.unit, den)
     end
 
-    m_X_over_eV = val(param.unit.unit, m_X)
-    ∞_over_eV = val(param.unit.unit, ∞)
+    m_X_over_eV = EUval(param.unit.unit, m_X)
+    ∞_over_eV = EUval(param.unit.unit, ∞)
     integration_region = (m_X_over_eV, ∞_over_eV)
 
     num_problem = IntegralProblem(num_integrand, integration_region)

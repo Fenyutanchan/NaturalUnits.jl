@@ -26,8 +26,8 @@ __property_function_dict = Dict{Symbol, Function}(
     :K => __Kelvin,
 
     :G_N => __G_Newton,
-    :M_P => __Planck_MASS,
-    :m_P => __Planck_mass
+    :M_Pl => __Planck_MASS,
+    :m_Pl => __Planck_mass
 )
 function add_property_function(name::Symbol, func::Function)
     __property_function_dict[name] = func
@@ -42,4 +42,4 @@ function getproperty(u::NaturalUnit, name::Symbol)
     end
 end
 
-val(nu::NaturalUnit, x) = val(nu.unit, x)
+EUval(nu::NaturalUnit, x) = EUval(nu.unit, x)

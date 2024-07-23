@@ -1,18 +1,13 @@
-abstract type EnergyUnit{T} end
+abstract type EnergyUnit end
 
-struct eV{T} <: EnergyUnit{T}
-    value::T # eV(num) means num eV
+struct eV <: EnergyUnit
+    value # eV(num) means num eV
     dimension::Union{Integer, Rational} # eV(num, dim) means num eV^dim
 
-    eV() = new{Int}(1, 1)
-    eV{T}() where T = new{T}(one(T), 1)
-    eV(value::T) where T = new{T}(value, 1)
-    eV{T1}(value::T2) where {T1, T2} = new{T1}(convert(T1, value), 1)
-    eV(value::T, dimension) where T = iszero(dimension) ? value : new{T}(value, dimension)
-    eV{T1}(value::T2, dimension) where {T1, T2} = iszero(dimension) ? convert(T1, value) : new{T1}(convert(T1, value), dimension)
+    eV() = new(1, 1)
+    eV(value) = new(value, 1)
+    eV(value, dimension) = iszero(dimension) ? value : new(value, dimension)
 end
-
-convert(::Type{eV{T1}}, u::eV{T2}) where {T1, T2} = eV{T1}(EUval(u), EUdim(u))
 
 const __head_num_dict = Dict{String, Integer}(
     "k" => 1e3,
@@ -30,19 +25,15 @@ function generation_template_eV(head, num)
     return quote
         export $(heV)
 
-        struct $(heV){T} <: EnergyUnit{T}
-            value::T # $(head)eV(num) means num $(head)eV
+        struct $(heV) <: EnergyUnit
+            value # $(head)eV(num) means num $(head)eV
             dimension::Union{Integer, Rational} # $(head)eV(num, dim) means num $(head)eV^dim
 
-            $(heV)() = new{Int}(1, 1)
-            $(heV){T}() where T = new{T}(one(T), 1)
-            $(heV)(value::T) where T = new{T}(value, 1)
-            $(heV){T1}(value::T2) where {T1, T2} = new{T1}(convert(T1, value), 1)
-            $(heV)(value::T, dimension) where T = iszero(dimension) ? value : new{T}(value, dimension)
-            $(heV){T1}(value::T2, dimension) where {T1, T2} = iszero(dimension) ? convert(T1, value) : new{T1}(convert(T1, value), dimension)
+            $(heV)() = new(1, 1)
+            $(heV)(value) = new(value, 1)
+            $(heV)(value, dimension) = iszero(dimension) ? value : new(value, dimension)
         end
 
-        convert(::Type{$(heV){T1}}, u::$(heV){T2}) where {T1, T2} = $(heV){T1}(EUval(u), EUdim(u))
         convert(::Type{<:eV}, u::$(heV)) = eV(EUval(u) * $(num)^EUdim(u), EUdim(u))
         convert(::Type{<:$(heV)}, u::eV) = $(heV)(EUval(u) / $(num)^EUdim(u), EUdim(u))
     end
@@ -58,11 +49,12 @@ one(::Type{T}) where T<:EnergyUnit = T()
 zero(u::T) where T<:EnergyUnit = T(0, EUdim(u))
 zero(::Type{T}) where T<:EnergyUnit = T(0) 
 
+convert_EnergyUnit_value_type(T1::Type, u::T2) where T2<:EnergyUnit = T2(convert(T1, EUval(u)), EUdim(u))
 convert(::Type{T}, u::T) where T<:EnergyUnit = identity(u)
 convert(::Type{<:EnergyUnit}, num::Number) = identity(num)
 convert(T::Type{<:EnergyUnit}, u::EnergyUnit) = convert(T, convert(eV, u))
 
-promote_rule(::Type{<:EnergyUnit{T1}}, ::Type{<:EnergyUnit{T2}}) where {T1, T2} = eV{promote_type(T1, T2)}
+promote_rule(::Type{<:EnergyUnit}, ::Type{<:EnergyUnit}) = eV
 
 __is_same_dimension(u1::EnergyUnit, u2::EnergyUnit) = EUdim(u1) == EUdim(u2)
 __diff_dimension_error(u1::EnergyUnit, u2::EnergyUnit, operate::String) = ArgumentError("Cannot $operate energy units with different dimensions: $(EUdim(u1)) and $(EUdim(u2)).")

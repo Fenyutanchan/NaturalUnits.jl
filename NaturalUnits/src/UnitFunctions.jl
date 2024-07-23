@@ -1,5 +1,5 @@
 function __Joule(u::NaturalUnit) # 1 J = ... ()eV
-    J = convert(u.unit, one(eV)) / SIConstants.e
+    J = one(eV) / SIConstants.e
     return convert(u.unit, J)
 end
 

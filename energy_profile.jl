@@ -13,16 +13,16 @@ convert(::Type{RealFieldElem}, num::Real) = RR(num)
 function main()
     param = AllParameter()
 
-    param.unit = NaturalUnit(MeV{RealFieldElem})
-    param.energy_unit_to_storage = MeV{BigFloat}
+    param.unit_to_storage = MeV
+    param.unit = NaturalUnit(param.unit_to_storage)
     
     param.mᵢ = eV(RR(1))
-    param.gᵢ = 1
-    param.gStar = 106.75
+    param.gᵢ = RR(1)
+    param.gStar = RR(106.75)
     param.gStarPBH = 7e-5 * param.gStar
-    param.mPBH₀ = 1 * param.unit.g
+    param.mPBH₀ = RR(1) * param.unit.g
 
-    param.α = .2
+    param.α = RR(.2)
     param.β = 1.1e-6 * (param.α / .2)^(-1/2) * (param.mPBH₀ / (1e4 * param.unit.g))^(-17/24)
     param.T₀ = 2 * (10 / param.gStar)^(1/4) * sqrt(3 * param.α * param.unit.M_Pl^3 / param.mPBH₀)
     param.ρR₀ = (const_pi(RR)^2 / 30) * param.gStar * param.T₀^4
@@ -35,7 +35,7 @@ function main()
 
     param.exponent_list = 0:.01:40
     jldopen(joinpath(@__DIR__, "data", generate_jld_file_name(param)), "w") do io
-        Eᵢ_list = Vector{param.energy_unit_to_storage}(undef, length(param.exponent_list))
+        Eᵢ_list = Vector{param.unit_to_storage}(undef, length(param.exponent_list))
         energy_profile_BE_list = deepcopy(Eᵢ_list)
         energy_profile_FD_list = deepcopy(Eᵢ_list)
         energy_profile_MB_list = deepcopy(Eᵢ_list)
@@ -46,10 +46,10 @@ function main()
             EP_FD = energy_profile_FD(Eᵢ, param)
             EP_MB = energy_profile_MB(Eᵢ, param)
 
-            Eᵢ_list[ii] = convert(param.energy_unit_to_storage, Eᵢ)
-            energy_profile_BE_list[ii] = convert(param.energy_unit_to_storage, EP_BE)
-            energy_profile_FD_list[ii] = convert(param.energy_unit_to_storage, EP_FD)
-            energy_profile_MB_list[ii] = convert(param.energy_unit_to_storage, EP_MB)
+            Eᵢ_list[ii] = convert(param.unit_to_storage, Eᵢ)
+            energy_profile_BE_list[ii] = convert(param.unit_to_storage, EP_BE)
+            energy_profile_FD_list[ii] = convert(param.unit_to_storage, EP_FD)
+            energy_profile_MB_list[ii] = convert(param.unit_to_storage, EP_MB)
         end
 
         io["Eᵢ_over_mᵢ"] = 10 .^ param.exponent_list

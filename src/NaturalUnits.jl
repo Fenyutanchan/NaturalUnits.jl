@@ -10,12 +10,13 @@ import Base: iterate, length # for broadcast
 export EnergyUnit, eV, generation_template_eV
 export NaturalUnit
 export EUdim, EUval
+export convert_EnergyUnit_value_type
 export add_property_function
 
 include("NUConstants.jl")
 include("SIConstants.jl")
 
-include("MainUnits.jl")
+include("EnergyUnits.jl")
 include("NaturalUnit.jl")
 include("UnitFunctions.jl")
 include("ConstantFunctions.jl")

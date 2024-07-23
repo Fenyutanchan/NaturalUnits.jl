@@ -42,9 +42,9 @@ function main()
 
         Threads.@threads for ii ∈ eachindex(param.exponent_list)
             Eᵢ = param.mᵢ * 10^param.exponent_list[ii]
-            EP_BE = energy_profile_BE(Eᵢ, param)
-            EP_FD = energy_profile_FD(Eᵢ, param)
-            EP_MB = energy_profile_MB(Eᵢ, param)
+            EP_BE = convert_EnergyUnit_value_type(BigFloat, energy_profile_BE(Eᵢ, param))
+            EP_FD = convert_EnergyUnit_value_type(BigFloat, energy_profile_FD(Eᵢ, param))
+            EP_MB = convert_EnergyUnit_value_type(BigFloat, energy_profile_MB(Eᵢ, param))
 
             Eᵢ_list[ii] = convert(param.unit_to_storage, Eᵢ)
             energy_profile_BE_list[ii] = convert(param.unit_to_storage, EP_BE)

@@ -15,7 +15,7 @@ function main()
     energy_profile_BE_list = load(jld2_file_name, "energy_profile_BE")
     energy_profile_FD_list = load(jld2_file_name, "energy_profile_FD")
     energy_profile_MB_list = load(jld2_file_name, "energy_profile_MB")
-    energy_unit = MeV{BigFloat}
+    energy_unit = MeV
 
     plot(
         Eᵢ_over_mᵢ_list,

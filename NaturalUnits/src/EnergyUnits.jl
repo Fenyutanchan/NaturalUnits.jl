@@ -9,7 +9,7 @@ struct eV <: EnergyUnit
     eV(value, dimension) = iszero(dimension) ? value : new(value, dimension)
 end
 
-const __head_num_dict = Dict{String, Integer}(
+const __head_num_dict = Dict{String, Real}(
     "k" => 1e3,
     "M" => 1e6,
     "G" => 1e9,
@@ -103,6 +103,7 @@ cbrt(u::T) where T<:EnergyUnit = T((cbrt ∘ EUval)(u), EUdim(u) // 3)
 
 isinf(u::EnergyUnit) = (isinf ∘ EUval)(u) || (isinf ∘ EUdim)(u)
 isnan(u::EnergyUnit) = (isnan ∘ EUval)(u) || (isnan ∘ EUdim)(u)
+iszero(u::EnergyUnit) = (iszero ∘ EUval)(u)
 
 iterate(u::EnergyUnit) = (u, nothing)
 iterate(::EnergyUnit, ::Nothing) = nothing

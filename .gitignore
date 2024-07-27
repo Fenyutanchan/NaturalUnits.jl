@@ -1,5 +1,4 @@
-tmp/
-
+*tmp*
 Manifest.toml
 *.jld2
 *.pdf

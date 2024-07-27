@@ -1,0 +1,7 @@
+name = "BlackHoleEvolution"
+uuid = "b6d8a5fe-ce92-409b-8681-b12e1f3261a5"
+authors = ["Quan-feng WU <32387646+Fenyutanchan@users.noreply.github.com>"]
+version = "0.1.0"
+
+[deps]
+NaturalUnits = "61adfb09-12d1-4e3c-91b1-54bf68ca093d"

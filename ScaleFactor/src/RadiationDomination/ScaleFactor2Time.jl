@@ -1,8 +1,11 @@
-export time_to_scale_factor
+export scale_factor_to_time
 
-function time_to_scale_factor(t::EnergyUnit; T₀=GeV(100), a₀::Real=1, t₀=MeV(0, -1), EU::Type{<:EnergyUnit}=MeV)
-    @check_EU_dimension t -1
-    @check_positive_value t
+function scale_factor_to_time(
+    ::Val{:RD}, a::Real;
+    T₀=GeV(100), a₀::Real=1, t₀=MeV(0, -1), EU::Type{<:EnergyUnit}=MeV
+)
+    @check_EU_dimension a 0
+    @check_positive_value a
 
     @check_EU_dimension T₀ 1
     @check_positive_value T₀
@@ -11,7 +14,6 @@ function time_to_scale_factor(t::EnergyUnit; T₀=GeV(100), a₀::Real=1, t₀=M
     @check_positive_value a₀
 
     @check_EU_dimension t₀ -1
-    @check_nonnegative_value t₀
 
     param = AllParameter()
     param.T₀ = convert(EU, T₀)
@@ -19,18 +21,17 @@ function time_to_scale_factor(t::EnergyUnit; T₀=GeV(100), a₀::Real=1, t₀=M
     param.EU = EU
     param.NU = NaturalUnit(EU)
 
-    t_times_EU_span = map(x -> EUval(EU, x), (t₀, t))
-
-    prob = ODEProblem(__diff_eq_time_to_scale_factor, a₀, t_times_EU_span, param)
+    t₀_times_EU = EUval(EU, t₀)
+    prob = ODEProblem(__diff_eq_scale_factor_to_time, t₀_times_EU, (a₀, a), param)
     sol = solve(prob)
     @assert successful_retcode(sol)
-    return sol.u[end]
+    return EU(sol(a), -1)
 end
 
-function __diff_eq_time_to_scale_factor(a, p, t)
+function __diff_eq_scale_factor_to_time(t, p, a)
     EU = p.EU
     M_Pl = p.NU.M_Pl
     T = __temperture(a; T₀=p.T₀, a₀=p.a₀, EU=EU)
     H = (π * T^2 / M_Pl) * sqrt(g_star(T) / 90)
-    return EUval(EU, H * a)
+    return EUval(EU, 1 / (H * a))
 end

@@ -1,6 +1,6 @@
-name = "ScaleFactorRD"
+name = "ScaleFactor"
 uuid = "d152e286-58ef-4c23-adfb-4554bbc305cb"
-authors = ["Quan-feng WU <32387646+Fenyutanchan@users.noreply.github.com>"]
+authors = ["Quan-feng WU <wuquanfeng@ihep.ac.cn>"]
 version = "0.1.0"
 
 [deps]

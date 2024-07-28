@@ -1,5 +1,6 @@
 [deps]
 AllParameters = "234c51ff-c7e5-47f4-8d58-ed90e758dc2f"
+BlackHoleEvolution = "b6d8a5fe-ce92-409b-8681-b12e1f3261a5"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"

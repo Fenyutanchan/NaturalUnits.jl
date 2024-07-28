@@ -2,7 +2,7 @@ module BlackHoleEvolution
 
 using NaturalUnits
 
-export BH_mass
+export BH_mass, τ_BH
 
 function BH_mass(M0::EnergyUnit, t::EnergyUnit; t0=MeV(0, -1), g::Real=1)
     @check_EU_dimension M0 1

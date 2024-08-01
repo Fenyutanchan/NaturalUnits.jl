@@ -6,7 +6,7 @@ using SimpleScaleFactor
 using Test
 
 @testset "parameters" begin
-    param = set_parameters()
+    param = SimpleScaleFactor.set_parameters()
     df = DataFrame(name=String[], value=Any[])
     for (key, value) in param
         push!(df, [key, value])
@@ -59,7 +59,7 @@ using Test
 end
 
 @testset "scale factor" begin
-    param = set_parameters()
+    param = SimpleScaleFactor.set_parameters()
     t_ini = param["t_ini"]
     t_r = param["t_r"]
     t_m = param["t_m"]
@@ -127,7 +127,7 @@ end
 end
 
 @testset "Hubble parameter" begin
-    param = set_parameters()
+    param = SimpleScaleFactor.set_parameters()
     t_ini = param["t_ini"]
     t_r = param["t_r"]
     t_m = param["t_m"]

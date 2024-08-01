@@ -18,7 +18,7 @@ const __parameter_constructor_dict = OrderedDict{String, Function}(
     "η_r" => __set_η_r!,
     "t_r" => __set_t_r!,
 
-    "t_ini" => __set_t_ini!
+    "t_EW" => __set_t_EW!
 )
 const __required_defaults = Dict{String, Any}(
     "a_0" => 1,
@@ -28,7 +28,7 @@ const __required_defaults = Dict{String, Any}(
     "Ω_Λ" => .6847,
     "h" => .674,
     "t_eq" => 51100 * (365 + 1/4) * 24 * 60^2 * NaturalUnit(MeV).s,
-    "T_ini" => GeV(1e3),
+    "T_EW" => GeV(1e2),
     "g_star" => 106.75,
     "EU" => MeV,
     "NU" => NaturalUnit(MeV)

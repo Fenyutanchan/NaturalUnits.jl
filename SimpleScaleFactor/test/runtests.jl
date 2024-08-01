@@ -20,8 +20,8 @@ using Test
         t_m = param["t_m"]
         t_eq = param["t_eq"]
         t_r = param["t_r"]
-        t_ini = param["t_ini"]
-        @test t_0 > t_mΛ > t_m > t_eq > t_r > t_ini
+        t_EW = param["t_EW"]
+        @test t_0 > t_mΛ > t_m > t_eq > t_r > t_EW
     end
 
     @info "η-t relation:"
@@ -61,7 +61,7 @@ end
 @testset "scale factor" begin
     param = SimpleScaleFactor.set_parameters()
     NU = param["NU"]
-    t_ini = param["t_ini"]
+    t_EW = param["t_EW"]
     t_r = param["t_r"]
     t_m = param["t_m"]
     t_mΛ = param["t_mΛ"]
@@ -70,12 +70,12 @@ end
     df = DataFrame(name=String[], t=EnergyUnit[], scale_factor=Float64[])
 
     @test begin # before initial time
-        push!(df, ["before initial time", t_ini / 2, scale_factor(t_ini / 2)])
+        push!(df, ["before initial time", t_EW / 2, scale_factor(t_EW / 2)])
         true
     end
 
     for (ii, rr) ∈ (enumerate ∘ sort! ∘ rand)(100)
-        t = t_ini * (t_r / t_ini)^rr
+        t = t_EW * (t_r / t_EW)^rr
         @test begin
             push!(df, ["radiation domination #$ii", t, scale_factor(t)])
             true
@@ -130,7 +130,7 @@ end
 @testset "Hubble parameter" begin
     param = SimpleScaleFactor.set_parameters()
     NU = param["NU"]
-    t_ini = param["t_ini"]
+    t_EW = param["t_EW"]
     t_r = param["t_r"]
     t_m = param["t_m"]
     t_mΛ = param["t_mΛ"]
@@ -139,12 +139,12 @@ end
     df = DataFrame(name=String[], t=EnergyUnit[], Hubble_parameter=EnergyUnit[])
 
     @test begin # before initial time
-        push!(df, ["before initial time", t_ini / 2, Hubble_parameter(t_ini / 2)])
+        push!(df, ["before initial time", t_EW / 2, Hubble_parameter(t_EW / 2)])
         true
     end
 
     for (ii, rr) ∈ (enumerate ∘ sort! ∘ rand)(100)
-        t = t_ini * (t_r / t_ini)^rr
+        t = t_EW * (t_r / t_EW)^rr
         @test begin
             push!(df, ["radiation domination #$ii", t, Hubble_parameter(t)])
             true

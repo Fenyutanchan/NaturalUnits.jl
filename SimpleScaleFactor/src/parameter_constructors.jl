@@ -146,15 +146,15 @@ function __set_t_r!(param_dict)
     return t_r
 end
 
-function __set_t_ini!(param_dict)
+function __set_t_EW!(param_dict)
     NU = param_dict["NU"]
     g_star = param_dict["g_star"]
-    T_ini = param_dict["T_ini"]
+    T_EW = param_dict["T_EW"]
     M_Pl = NU.M_Pl
 
-    H_sqr = (π^2 / 90) * g_star * T_ini^4 / M_Pl^2
+    H_sqr = (π^2 / 90) * g_star * T_EW^4 / M_Pl^2
 
-    t_ini = 1 / sqrt(2 * H_sqr)
-    param_dict["t_ini"] = t_ini
-    return t_ini
+    t_EW = 1 / sqrt(2 * H_sqr)
+    param_dict["t_EW"] = t_EW
+    return t_EW
 end

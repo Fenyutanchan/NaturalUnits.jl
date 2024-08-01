@@ -1,7 +1,7 @@
 scale_factor(t) = scale_factor(t, set_parameters())
 
 function scale_factor(t::EnergyUnit, param_dict::Dict)
-    t_ini = param_dict["t_ini"]
+    t_EW = param_dict["t_EW"]
     t_r = param_dict["t_r"]
     t_m = param_dict["t_m"]
     t_mΛ = param_dict["t_mΛ"]
@@ -9,7 +9,7 @@ function scale_factor(t::EnergyUnit, param_dict::Dict)
     @check_nonnegative_value t
 
     if t < t_r
-        t < t_ini && @warn "Time is before the initial time!"
+        # t < t_EW && @warn "Time is before the initial time!"
         return scale_factor(Val(:rd), t, param_dict)
     elseif t < t_m
         return scale_factor(Val(:rm), t, param_dict)

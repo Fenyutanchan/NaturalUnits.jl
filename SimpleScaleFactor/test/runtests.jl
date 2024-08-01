@@ -125,3 +125,72 @@ end
         true
     end
 end
+
+@testset "Hubble parameter" begin
+    param = set_parameters()
+    t_ini = param["t_ini"]
+    t_r = param["t_r"]
+    t_m = param["t_m"]
+    t_mΛ = param["t_mΛ"]
+    t_0 = param["t_0"]
+
+    df = DataFrame(name=String[], t=EnergyUnit[], Hubble_parameter=EnergyUnit[])
+
+    @test begin # before initial time
+        push!(df, ["before initial time", t_ini / 2, Hubble_parameter(t_ini / 2)])
+        true
+    end
+
+    for (ii, rr) ∈ (enumerate ∘ sort! ∘ rand)(100)
+        t = t_ini * (t_r / t_ini)^rr
+        @test begin
+            push!(df, ["radiation domination #$ii", t, Hubble_parameter(t)])
+            true
+        end
+    end
+
+    for (ii, rr) ∈ (enumerate ∘ sort! ∘ rand)(100)
+        t = t_r * (t_m / t_r)^rr
+        @test begin
+            push!(df, ["radiaiton-matter comparable #$ii", t, Hubble_parameter(t)])
+            true
+        end
+    end
+
+    for (ii, rr) ∈ (enumerate ∘ sort! ∘ rand)(100)
+        t = t_m * (t_mΛ / t_m)^rr
+        @test begin
+            push!(df, ["matter domination #$ii", t, Hubble_parameter(t)])
+            true
+        end
+    end
+
+    for (ii, rr) ∈ (enumerate ∘ sort! ∘ rand)(100)
+        t = t_mΛ * (t_0 / t_mΛ)^rr
+        @test begin
+            push!(df, ["matter-dark-energy comparable #$ii", t, Hubble_parameter(t)])
+            true
+        end
+    end
+
+    @test begin # future
+        push!(df, ["future", t_0 * 2, Hubble_parameter(t_0 * 2)])
+        true
+    end
+
+    println(df)
+
+    @test begin
+        
+        plot(
+            df.t[begin+1:end-1] ./ SimpleScaleFactor.NU.s,
+            df.Hubble_parameter[begin+1:end-1] ./ eV(2.133e-33),
+            label=""
+        )
+        plot!(xscale=:log10, yscale=:log10)
+        xlabel!(L"$t~[\mathrm{s}]$")
+        ylabel!(L"$H~[{} \times 100~\mathrm{km}~\mathrm{s}^{-1}~\mathrm{Mpc}^{-1}]$")
+        (savefig ∘ joinpath)(@__DIR__, "test_Hubble_parameter.pdf")
+        true
+    end
+end

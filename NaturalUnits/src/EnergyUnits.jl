@@ -6,7 +6,7 @@ struct eV <: EnergyUnit
 
     eV() = new(1, 1)
     eV(value) = new(value, 1)
-    eV(value, dimension) = iszero(dimension) ? value : new(value, dimension)
+    eV(value, dimension) = iszero(dimension) ? value : new(value, rationalize(dimension))
 end
 
 const __head_num_dict = Dict{String, Real}(
@@ -31,7 +31,7 @@ function generation_template_eV(head, num)
 
             $(heV)() = new(1, 1)
             $(heV)(value) = new(value, 1)
-            $(heV)(value, dimension) = iszero(dimension) ? value : new(value, dimension)
+            $(heV)(value, dimension) = iszero(dimension) ? value : new(value, rationalize(dimension))
         end
 
         convert(::Type{<:eV}, u::$(heV)) = eV(EUval(u) * $(num)^EUdim(u), EUdim(u))

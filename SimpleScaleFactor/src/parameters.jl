@@ -27,9 +27,11 @@ const __required_defaults = Dict{String, Any}(
     "Ω_r" => 9.02e-5,
     "Ω_Λ" => .6847,
     "h" => .674,
-    "t_eq" => 51100 * (365 + 1/4) * 24 * 60^2 * NU.s,
+    "t_eq" => 51100 * (365 + 1/4) * 24 * 60^2 * NaturalUnit(MeV).s,
     "T_ini" => GeV(1e3),
-    "g_star" => 106.75
+    "g_star" => 106.75,
+    "EU" => MeV,
+    "NU" => NaturalUnit(MeV)
 )
 const __forbidden_keys = keys(__parameter_constructor_dict)
 const __required_keys = keys(__required_defaults)

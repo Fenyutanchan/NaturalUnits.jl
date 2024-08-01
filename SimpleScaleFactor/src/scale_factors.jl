@@ -19,7 +19,11 @@ function scale_factor(t::EnergyUnit, param_dict::Dict)
         return scale_factor(Val(:mΛ), t, param_dict)
     end
 end
-scale_factor(t::Real, param_dict::Dict) = scale_factor(EU(t, -1), param_dict)
+
+function scale_factor(t::Real, param_dict::Dict)
+    EU = param_dict["EU"]
+    return scale_factor(EU(t, -1), param_dict)
+end
 
 function scale_factor(::Val{:rd}, t::EnergyUnit, param_dict::Dict)
     H_0 = param_dict["H_0"]
@@ -53,8 +57,10 @@ function scale_factor(::Val{:mΛ}, t::EnergyUnit, param_dict::Dict)
     return cbrt((Ω_m / Ω_Λ) * sinh((3/2) * α * t)^2)
 end
 
-scale_factor(T::Val, t::Real, param_dict::Dict) =
-    scale_factor(T, EU(t, -1), param_dict)
+function scale_factor(T::Val, t::Real, param_dict::Dict)
+    EU = param_dict["EU"]
+    return scale_factor(T, EU(t, -1), param_dict)
+end
 
 function a_η_fun(η::EnergyUnit, param_dict)
     a_eq = param_dict["a_eq"]
@@ -62,7 +68,11 @@ function a_η_fun(η::EnergyUnit, param_dict)
 
     return a_eq * ((η / η_star)^2 + 2 * η / η_star)
 end
-a_η_fun(η::Real, param_dict) = a_η_fun(EU(η, -1), param_dict)
+
+function a_η_fun(η::Real, param_dict)
+    EU = param_dict["EU"]
+    return a_η_fun(EU(η, -1), param_dict)
+end
 
 function t_η_fun(η::EnergyUnit, param_dict)
     a_eq = param_dict["a_eq"]
@@ -70,9 +80,14 @@ function t_η_fun(η::EnergyUnit, param_dict)
 
     return a_eq * η^2 * (η + 3 * η_star) / (3 * η_star^2)
 end
-t_η_fun(η::Real, param_dict) = EUval(EU, t_η_fun(EU(η, -1), param_dict))
+
+function t_η_fun(η::Real, param_dict)
+    EU = param_dict["EU"]
+    return EUval(EU, t_η_fun(EU(η, -1), param_dict))
+end
 
 function η_t_fun(t::Real, param_dict)
+    EU = param_dict["EU"]
     a_eq = param_dict["a_eq"]
     η_star = param_dict["η_star"]
     η_m = param_dict["η_m"]
@@ -108,4 +123,8 @@ function η_t_fun(t::Real, param_dict)
     #     return EU(real_root_list[end], -1)
     # end
 end
-η_t_fun(t::EnergyUnit, param_dict) = EU(η_t_fun(EUval(EU, t), param_dict), -1)
+
+function η_t_fun(t::EnergyUnit, param_dict)
+    EU = param_dict["EU"]
+    return EU(η_t_fun(EUval(EU, t), param_dict), -1)
+end

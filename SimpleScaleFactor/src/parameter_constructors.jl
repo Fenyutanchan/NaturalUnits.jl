@@ -41,6 +41,7 @@ function __set_t_0!(param_dict)
 end
 
 function __set_t_mΛ!(param_dict)
+    EU = param_dict["EU"]
     tol = param_dict["tolerance"]
 
     t_0 = EUval(EU, param_dict["t_0"])
@@ -79,6 +80,7 @@ function __set_η_eq!(param_dict)
 end
 
 function __set_η_m!(param_dict)
+    EU = param_dict["EU"]
     tol = param_dict["tolerance"]
 
     η_eq = param_dict["η_eq"]
@@ -110,6 +112,7 @@ function __set_t_m!(param_dict)
 end
 
 function __set_η_r!(param_dict)
+    EU = param_dict["EU"]
     tol = param_dict["tolerance"]
     H_0 = param_dict["H_0"]
     Ω_r = param_dict["Ω_r"]
@@ -144,6 +147,7 @@ function __set_t_r!(param_dict)
 end
 
 function __set_t_ini!(param_dict)
+    NU = param_dict["NU"]
     g_star = param_dict["g_star"]
     T_ini = param_dict["T_ini"]
     M_Pl = NU.M_Pl

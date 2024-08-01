@@ -60,6 +60,7 @@ end
 
 @testset "scale factor" begin
     param = SimpleScaleFactor.set_parameters()
+    NU = param["NU"]
     t_ini = param["t_ini"]
     t_r = param["t_r"]
     t_m = param["t_m"]
@@ -114,7 +115,7 @@ end
 
     @test begin
         plot(
-            df.t[begin+1:end-1] ./ SimpleScaleFactor.NU.s,
+            df.t[begin+1:end-1] ./ NU.s,
             df.scale_factor[begin+1:end-1],
             label=""
         )
@@ -128,6 +129,7 @@ end
 
 @testset "Hubble parameter" begin
     param = SimpleScaleFactor.set_parameters()
+    NU = param["NU"]
     t_ini = param["t_ini"]
     t_r = param["t_r"]
     t_m = param["t_m"]
@@ -183,7 +185,7 @@ end
     @test begin
         
         plot(
-            df.t[begin+1:end-1] ./ SimpleScaleFactor.NU.s,
+            df.t[begin+1:end-1] ./ NU.s,
             df.Hubble_parameter[begin+1:end-1] ./ eV(2.133e-33),
             label=""
         )

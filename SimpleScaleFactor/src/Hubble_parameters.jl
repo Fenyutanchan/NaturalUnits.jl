@@ -19,7 +19,10 @@ function Hubble_parameter(t::EnergyUnit, param_dict::Dict)
         return Hubble_parameter(Val(:mΛ), t, param_dict)
     end
 end
-Hubble_parameter(t::Real, param_dict::Dict) = Hubble_parameter(EU(t, -1), param_dict)
+function Hubble_parameter(t::Real, param_dict::Dict)
+    EU = param_dict["EU"]
+    return Hubble_parameter(EU(t, -1), param_dict)
+end
 
 Hubble_parameter(::Val{:rd}, t::EnergyUnit, param_dict::Dict) = 1 / (2 * t)
 
@@ -45,6 +48,8 @@ function Hubble_parameter(::Val{:mΛ}, t::EnergyUnit, param_dict::Dict)
     return α * coth((3/2) * α * t)
 end
 
-Hubble_parameter(T::Val, t::Real, param_dict::Dict) =
+function Hubble_parameter(T::Val, t::Real, param_dict::Dict)
+    EU = param_dict["EU"]
     Hubble_parameter(T, EU(t, -1), param_dict)
+end
     

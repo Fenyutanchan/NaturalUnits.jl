@@ -8,8 +8,8 @@ import SciMLBase: successful_retcode
 
 export scale_factor, Hubble_parameter
 
-const EU = MeV # using MeV as default energy unit.
-const NU = NaturalUnit(MeV)
+# const EU = MeV # using MeV as default energy unit.
+# const NU = NaturalUnit(MeV)
 
 include("parameters.jl")
 include("scale_factors.jl")

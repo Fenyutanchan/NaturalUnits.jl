@@ -1,5 +1,7 @@
 using DataFrames
+using LaTeXStrings
 using NaturalUnits
+using Plots
 using SimpleScaleFactor
 using Test
 
@@ -109,4 +111,17 @@ end
     end
 
     println(df)
+
+    @test begin
+        plot(
+            df.t[begin+1:end-1] ./ SimpleScaleFactor.NU.s,
+            df.scale_factor[begin+1:end-1],
+            label=""
+        )
+        # plot!(xscale=:log10, yscale=:log10)
+        xlabel!(L"$t~[\mathrm{s}]$")
+        ylabel!(L"$a$")
+        (savefig ∘ joinpath)(@__DIR__, "test_scale_factor.pdf")
+        true
+    end
 end

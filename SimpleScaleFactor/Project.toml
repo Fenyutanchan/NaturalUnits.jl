@@ -7,7 +7,6 @@ version = "0.1.0"
 NaturalUnits = "61adfb09-12d1-4e3c-91b1-54bf68ca093d"
 NonlinearSolve = "8913a72c-1f9b-4ce2-8d82-65094dcecaec"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
-RealPolynomialRoots = "87be438c-38ae-47c4-9398-763eabe5c3be"
 SciMLBase = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
 
 [extras]

@@ -3,7 +3,6 @@ module SimpleScaleFactor
 using NaturalUnits
 using NonlinearSolve
 using OrderedCollections
-using RealPolynomialRoots
 
 import SciMLBase: successful_retcode
 

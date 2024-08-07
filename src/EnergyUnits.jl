@@ -1,3 +1,8 @@
+# Copyright (c) 2024 Quan-feng WU <wuquanfeng@ihep.ac.cn>
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 abstract type EnergyUnit end
 
 struct eV <: EnergyUnit

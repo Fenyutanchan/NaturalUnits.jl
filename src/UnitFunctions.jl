@@ -1,3 +1,8 @@
+# Copyright (c) 2024 Quan-feng WU <wuquanfeng@ihep.ac.cn>
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 function __Joule(u::NaturalUnit) # 1 J = ... ()eV
     J = one(eV) / SIConstants.e
     return convert(u.unit, J)

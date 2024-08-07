@@ -1,3 +1,8 @@
+# Copyright (c) 2024 Quan-feng WU <wuquanfeng@ihep.ac.cn>
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 macro check_EU_dimension(expr, dim)
     return quote
         @assert EUdim($(esc(expr))) == $(esc(dim)) "Expected mass dimension of $(string($(esc(dim)))), but got $(EUdim($(esc(expr)))): $($(esc(expr)))."

@@ -1,3 +1,8 @@
+# Copyright (c) 2024 Quan-feng WU <wuquanfeng@ihep.ac.cn>
+# 
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
 function __G_Newton(u::NaturalUnit) # 1 G = ... ()eV^{-2}
     GN = 6.67430e-11 * __meter(u)^3 / (
         __kilogram(u) * __second(u)^2

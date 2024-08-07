@@ -1,2 +1,0 @@
-function scale_factor_to_time end
-function time_to_scale_factor end

@@ -93,6 +93,7 @@ end
 /(u::T, num) where T<:EnergyUnit = T(EUval(u) / num, EUdim(u))
 //(u::T, num) where T<:EnergyUnit = T(EUval(u) // num, EUdim(u))
 ^(u::T, num) where T<:EnergyUnit = T(EUval(u)^num, EUdim(u)*num)
+inv(u::T) where T<:EnergyUnit = T((inv ∘ EUval)(u), -EUdim(u))
 
 ==(u1::T, u2::T) where T<:EnergyUnit = EUval(u1) == EUval(u2) && EUdim(u1) == EUdim(u2)
 ==(u1::EnergyUnit, u2::EnergyUnit) = ==(promote(u1, u2)...)

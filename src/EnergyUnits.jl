@@ -104,6 +104,7 @@ else
 end
 isless(u1::EnergyUnit, u2::EnergyUnit) = isless(promote(u1, u2)...)
 
+abs(u::T) where T<:EnergyUnit = T(abs(EUval(u)), EUdim(u))
 sqrt(u::T) where T<:EnergyUnit = T((sqrt ∘ EUval)(u), EUdim(u) // 2)
 cbrt(u::T) where T<:EnergyUnit = T((cbrt ∘ EUval)(u), EUdim(u) // 3)
 

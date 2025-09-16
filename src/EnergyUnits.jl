@@ -115,6 +115,7 @@ iszero(u::EnergyUnit) = (iszero ∘ EUval)(u)
 iterate(u::EnergyUnit) = (u, nothing)
 iterate(::EnergyUnit, ::Nothing) = nothing
 length(u::EnergyUnit) = 1
+adjoint(u::EnergyUnit) = u # for zip
 
 EUdim(u::EnergyUnit) = u.dimension
 EUdim(num::Number) = 0

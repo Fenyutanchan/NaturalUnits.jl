@@ -123,4 +123,4 @@ EUval(u::EnergyUnit) = u.value
 EUval(::Type{T}, u::EnergyUnit) where T<:EnergyUnit = convert(T, u).value
 EUval(num::Number) = identity(num)
 EUval(::Type{T}, num::Number) where T<:EnergyUnit = identity(num)
-EUval(::Type{T}) where T<:EnergyUnit = x::EnergyUnit -> EUval(T, x)
+EUval(::Type{T}) where T<:EnergyUnit = x -> EUval(T, x)

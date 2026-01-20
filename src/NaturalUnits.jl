@@ -7,7 +7,7 @@ module NaturalUnits
 
 import Base: convert, promote_rule
 import Base: +, -, *, /, //, ^, ==, inv, isless
-import Base: abs, sqrt, cbrt, one, zero
+import Base: abs, abs2, sqrt, cbrt, one, zero, real, imag, conj, angle
 import Base: isnan, isinf, iszero
 import Base: getproperty
 import Base: iterate, length # for broadcast

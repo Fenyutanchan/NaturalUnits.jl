@@ -105,8 +105,13 @@ end
 isless(u1::EnergyUnit, u2::EnergyUnit) = isless(promote(u1, u2)...)
 
 abs(u::T) where T<:EnergyUnit = T(abs(EUval(u)), EUdim(u))
+abs2(u::T) where T<:EnergyUnit = T(abs2(EUval(u)), 2 * EUdim(u))
 sqrt(u::T) where T<:EnergyUnit = T((sqrt ∘ EUval)(u), EUdim(u) // 2)
 cbrt(u::T) where T<:EnergyUnit = T((cbrt ∘ EUval)(u), EUdim(u) // 3)
+real(u::T) where T<:EnergyUnit = T(real(EUval(u)), EUdim(u))
+imag(u::T) where T<:EnergyUnit = T(imag(EUval(u)), EUdim(u))
+conj(u::T) where T<:EnergyUnit = T(conj(EUval(u)), EUdim(u))
+angle(u::T) where T<:EnergyUnit = angle(EUval(u))
 
 isinf(u::EnergyUnit) = (isinf ∘ EUval)(u) || (isinf ∘ EUdim)(u)
 isnan(u::EnergyUnit) = (isnan ∘ EUval)(u) || (isnan ∘ EUdim)(u)

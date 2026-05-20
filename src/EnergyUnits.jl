@@ -14,18 +14,7 @@ struct eV <: EnergyUnit
     eV(value, dimension) = iszero(dimension) ? value : new(value, rationalize(dimension))
 end
 
-const __head_num_dict = Dict{String, Real}(
-    "k" => 1e3,
-    "M" => 1e6,
-    "G" => 1e9,
-    "T" => 1e12
-)
-
-function generation_template_eV(head)
-    @assert haskey(__head_num_dict, head)
-    return generation_template_eV(head, __head_num_dict[head])
-end
-function generation_template_eV(head, num)
+macro generate_XeV(head, num)
     heV = Symbol(head, "eV")
     return quote
         export $(heV)
@@ -41,12 +30,13 @@ function generation_template_eV(head, num)
 
         convert(::Type{<:eV}, u::$(heV)) = eV(EUval(u) * $(num)^EUdim(u), EUdim(u))
         convert(::Type{<:$(heV)}, u::eV) = $(heV)(EUval(u) / $(num)^EUdim(u), EUdim(u))
-    end
+    end |> esc
 end
 
-for head ∈ keys(__head_num_dict)
-    (eval ∘ generation_template_eV)(head)
-end
+@generate_XeV k 1e3
+@generate_XeV M 1e6
+@generate_XeV G 1e9
+@generate_XeV T 1e12
 
 one(u::T) where T<:EnergyUnit = T(1, EUdim(u))
 one(::Type{T}) where T<:EnergyUnit = T()

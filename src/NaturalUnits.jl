@@ -13,7 +13,7 @@ import Base: getproperty
 import Base: iterate, length # for broadcast
 import Base: adjoint # for zip
 
-export EnergyUnit, eV, generation_template_eV
+export EnergyUnit, eV, @generate_XeV
 export NaturalUnit
 export EUdim, EUval
 export convert_EnergyUnit_value_type

@@ -4,7 +4,7 @@
 # https://opensource.org/licenses/MIT
 
 function __G_Newton(u::NaturalUnit) # 1 G = ... ()eV^{-2}
-    GN = 6.67430e-11 * __meter(u)^3 / (
+    GN = SIConstants.G_N * __meter(u)^3 / (
         __kilogram(u) * __second(u)^2
     )
     return GN

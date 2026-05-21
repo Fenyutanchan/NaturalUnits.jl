@@ -7,11 +7,11 @@ module NaturalUnits
 
 import Base: convert, promote_rule
 import Base: +, -, *, /, //, ^, ==, inv, isless
-import Base: abs, abs2, sqrt, cbrt, one, zero, real, imag, conj, angle
+import Base: ==, hash, isless, isequal
+import Base: abs, abs2, sqrt, cbrt, one, oneunit, zero, real, imag, conj, angle
 import Base: isnan, isinf, iszero
-import Base: getproperty
-import Base: iterate, length # for broadcast
-import Base: adjoint # for zip
+import Base: getproperty, propertynames
+import Base.Broadcast: broadcastable
 
 export EnergyUnit, eV, @generate_XeV
 export NaturalUnit

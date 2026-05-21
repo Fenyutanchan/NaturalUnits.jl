@@ -21,7 +21,7 @@ function __G_Newton end
 function __Planck_MASS end
 function __Planck_mass end
 
-__property_function_dict = Dict{Symbol, Function}(
+const __property_function_dict = Dict{Symbol, Function}(
     :J => __Joule,
     :m => __meter,
     :cm => __centimeter,
@@ -35,16 +35,20 @@ __property_function_dict = Dict{Symbol, Function}(
     :m_Pl => __Planck_mass
 )
 function add_property_function(name::Symbol, func::Function)
+    haskey(__property_function_dict, name) &&
+        @warn "Overwriting existing property function for $(name)!"
     __property_function_dict[name] = func
     return nothing
 end
 
 function getproperty(u::NaturalUnit, name::Symbol)
-    if haskey(__property_function_dict, name)
-        return __property_function_dict[name](u)
-    else
-        return getfield(u, name)
-    end
+    func = get(__property_function_dict, name, nothing)
+    return isnothing(func) ? getfield(u, name) : func(u)
+end
+
+function propertynames(u::NaturalUnit, private::Bool=false)
+    registered = Tuple(keys(__property_function_dict))
+    return (registered..., fieldnames(typeof(u))...)
 end
 
 EUval(nu::NaturalUnit, x) = EUval(nu.unit, x)

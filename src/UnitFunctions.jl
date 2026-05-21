@@ -4,7 +4,7 @@
 # https://opensource.org/licenses/MIT
 
 function __Joule(u::NaturalUnit) # 1 J = ... ()eV
-    J = one(eV) / SIConstants.e
+    J = oneunit(eV) / SIConstants.e
     return convert(u.unit, J)
 end
 
@@ -23,7 +23,7 @@ function __second(u::NaturalUnit) # 1 s = ... ()eV^{-1}
 end
 
 function __kilogram(u::NaturalUnit) # 1 kg = ... ()eV
-    kg = __Joule(u)/ (
+    kg = __Joule(u) / (
         __meter(u)^2 / __second(u)^2
     )
     return kg

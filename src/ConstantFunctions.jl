@@ -10,7 +10,7 @@ function __G_Newton(u::NaturalUnit) # 1 G = ... ()eV^{-2}
     return GN
 end
 
-function __Planck_MASS(u::NaturalUnit) # 1 M_Planck = ... ()eV
+function __reduced_Planck_mass(u::NaturalUnit) # 1 M_Planck = ... ()eV
     return 1 / sqrt(8 * π * __G_Newton(u))
 end
 

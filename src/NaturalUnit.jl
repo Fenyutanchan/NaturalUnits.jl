@@ -18,7 +18,7 @@ function __Kelvin end
 
 # in NaturalUnits.jl/src/ConstantFunctions.jl
 function __G_Newton end
-function __Planck_MASS end
+function __reduced_Planck_mass end
 function __Planck_mass end
 
 const __property_function_dict = Dict{Symbol, Function}(
@@ -31,7 +31,7 @@ const __property_function_dict = Dict{Symbol, Function}(
     :K => __Kelvin,
 
     :G_N => __G_Newton,
-    :M_Pl => __Planck_MASS,
+    :M_Pl => __reduced_Planck_mass,
     :m_Pl => __Planck_mass
 )
 function add_property_function(name::Symbol, func::Function)

@@ -11,6 +11,7 @@ const test_files = [
     "test_constants",
     "test_edge_cases",
     "test_broadcast",
+    "test_dimensionless",
 ]
 
 @testset "NaturalUnits.jl" begin

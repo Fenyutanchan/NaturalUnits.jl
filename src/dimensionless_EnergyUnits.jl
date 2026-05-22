@@ -7,7 +7,10 @@ import Base: log, log2, log10, exp, exp2, exp10
 
 export unwrap_dimensionless_EU
 
-unwrap_dimensionless_EU(u::EnergyUnit) = iszero(EUdim(u)) ? EUval(u) : u
+function unwrap_dimensionless_EU(u::EnergyUnit{T})::Union{T, EnergyUnit{T}} where {T<:Number}
+    return iszero(EUdim(u)) ? EUval(u) : u
+end
+unwrap_dimensionless_EU(u::Number) = identity(u)
 
 function _unwrap_dimensionless_EU(u::EnergyUnit)
     iszero(EUdim(u)) || throw(ArgumentError("Energy unit must be dimensionless!"))

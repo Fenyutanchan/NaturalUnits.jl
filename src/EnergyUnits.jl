@@ -98,6 +98,10 @@ convert(::Type{T}, u::T) where {T<:EnergyUnit} = identity(u)
 convert(::Type{T}, num::Number) where {T<:EnergyUnit} = T(num, 0)
 convert(::Type{EnergyUnit}, num::Number) = eV(num, 0)
 convert(T::Type{<:EnergyUnit}, u::EnergyUnit) = convert(T, convert(eV, u))
+function convert(T::Type{<:Number}, u::EnergyUnit)
+    iszero(EUdim(u)) || throw(ArgumentError("Cannot convert energy unit with non-zero dimension to a number."))
+    return convert(T, EUval(u))
+end
 
 # Same-prefix promotion (eV) and the cross-prefix fallback.
 promote_rule(::Type{<:EnergyUnit{T}}, ::Type{<:EnergyUnit{S}}) where {T, S} =
@@ -127,7 +131,10 @@ zero(u::U) where {U<:EnergyUnit} = U(zero(EUval(u)), EUdim(u))
 # =============================================================================
 
 __is_same_dimension(u1::EnergyUnit, u2::EnergyUnit) = EUdim(u1) == EUdim(u2)
-__diff_dimension_error(u1::EnergyUnit, u2::EnergyUnit, operate::String) = ArgumentError("Cannot $operate energy units with different dimensions: $(EUdim(u1)) and $(EUdim(u2)).")
+__diff_dimension_error(u1::Union{Number, EnergyUnit}, u2::Union{Number, EnergyUnit}, operate::String) =
+    ArgumentError("Cannot $operate energy units with different dimensions: $(EUdim(u1)) and $(EUdim(u2)).")
+
+include("dimensionless_EnergyUnits.jl")
 
 # --- Addition and subtraction ---
 
@@ -194,6 +201,10 @@ else
     throw(__diff_dimension_error(u1, u2, "compare"))
 end
 isless(u1::EnergyUnit, u2::EnergyUnit) = isless(promote(u1, u2)...)
+function isless(num::Number, u::EnergyUnit)
+    iszero(EUdim(u)) || throw(__diff_dimension_error(num, u, "compare"))
+    return isless(num, EUval(u))
+end
 
 # =============================================================================
 # Math functions
